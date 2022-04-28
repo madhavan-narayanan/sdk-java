@@ -78,6 +78,7 @@
         <module>spring</module>
         <module>sql</module>
         <module>bom</module>
+        <module>pulsar</module>
     </modules>
 
     <properties>
