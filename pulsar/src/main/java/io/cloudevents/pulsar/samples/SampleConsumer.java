@@ -55,15 +55,17 @@ public class SampleConsumer {
                 .subscriptionType(SubscriptionType.Shared).replicateSubscriptionState(false).subscribe();
             System.out.println("Consumer  is " + consumer);
             int count=0;
+            System.out.println("Waiting for message");
             while(count < 100) {
-                System.out.println("Waiting for message");
                 Message<CloudEvent> msg = consumer.receive(5, TimeUnit.SECONDS);
-                System.out.println("Got message " + msg);
                 if(msg != null) {
+                    System.out.println("Got message " + msg);
                     consumer.acknowledge(msg);
                     try {
                         CloudEvent event = msg.getValue();
-                        String contentType = event.getAttribute(CloudEventV1.DATACONTENTTYPE).toString();
+                        String contentType = "";
+                        if(event.getAttribute(CloudEventV1.DATACONTENTTYPE) != null)
+                            contentType = event.getAttribute(CloudEventV1.DATACONTENTTYPE).toString();
                         if(contentType.equals("object/user"))
                         {
                             User user = PojoCloudEventDataMapper
